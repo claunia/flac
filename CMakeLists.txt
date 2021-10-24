@@ -68,7 +68,9 @@ check_function_exists(fseeko HAVE_FSEEKO)
 check_c_source_compiles("int main() { return __builtin_bswap16 (0) ; }" HAVE_BSWAP16)
 check_c_source_compiles("int main() { return __builtin_bswap32 (0) ; }" HAVE_BSWAP32)
 
-test_big_endian(CPU_IS_BIG_ENDIAN)
+if(NOT "${CMAKE_C_PLATFORM_ID}" MATCHES "MinGW" OR (NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm" AND NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64"))
+    test_big_endian(CPU_IS_BIG_ENDIAN)
+endif()
 
 check_c_compiler_flag(-Werror HAVE_WERROR_FLAG)
 check_c_compiler_flag(-Wdeclaration-after-statement HAVE_DECL_AFTER_STMT_FLAG)
