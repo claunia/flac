@@ -1415,6 +1415,8 @@ FLAC_API FLAC__StreamEncoderInitStatus FLAC__stream_encoder_init_ogg_FILE(
 	return init_FILE_internal_(encoder, file, progress_callback, client_data, /*is_ogg=*/true);
 }
 
+#ifndef FLAC__NO_FILEIO
+
 static FLAC__StreamEncoderInitStatus init_file_internal_(
 	FLAC__StreamEncoder *encoder,
 	const char *filename,
@@ -1464,6 +1466,8 @@ FLAC_API FLAC__StreamEncoderInitStatus FLAC__stream_encoder_init_ogg_file(
 {
 	return init_file_internal_(encoder, filename, progress_callback, client_data, /*is_ogg=*/true);
 }
+
+#endif // FLAC__NO_FILEIO
 
 FLAC_API FLAC__bool FLAC__stream_encoder_finish(FLAC__StreamEncoder *encoder)
 {
