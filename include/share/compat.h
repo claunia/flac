@@ -53,6 +53,9 @@
 #include <sys/types.h> /* for off_t */
 #define FLAC__off_t __int64 /* use this instead of off_t to fix the 2 GB limit */
 #define FLAC__OFF_T_MAX INT64_MAX
+
+#ifndef FLAC__NO_FILEIO
+
 #if !defined __MINGW32__
 #define fseeko _fseeki64
 #define ftello _ftelli64
@@ -62,6 +65,9 @@
 #define ftello ftello64
 #endif
 #endif
+
+#endif // FLAC__NO_FILEIO
+
 #else
 #ifndef HAVE_FSEEKO
 #define fseeko fseek
@@ -184,6 +190,8 @@
 #define flac_printf printf_utf8
 #define flac_fprintf fprintf_utf8
 #define flac_vfprintf vfprintf_utf8
+#ifndef FLAC__NO_FILEIO
+
 #define flac_fopen fopen_utf8
 #define flac_chmod chmod_utf8
 #define flac_utime utime_utf8
@@ -191,17 +199,21 @@
 #define flac_rename rename_utf8
 #define flac_stat stat64_utf8
 
+#endif
+
 #else
 
 #define flac_printf printf
 #define flac_fprintf fprintf
 #define flac_vfprintf vfprintf
 
+#ifndef FLAC__NO_FILEIO
 #define flac_fopen fopen
 #define flac_chmod chmod
 #define flac_unlink unlink
 #define flac_rename rename
 #define flac_stat stat
+#endif
 
 #if defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE >= 200809L)
 #define flac_utime(a, b) utimensat (AT_FDCWD, a, *b, 0)
@@ -210,12 +222,14 @@
 #endif
 #endif
 
+#ifndef FLAC__NO_FILEIO
 #ifdef _WIN32
 #define flac_stat_s __stat64 /* stat struct */
 #define flac_fstat _fstat64
 #else
 #define flac_stat_s stat /* stat struct */
 #define flac_fstat fstat
+#endif
 #endif
 
 #ifdef ANDROID
